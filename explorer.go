@@ -27,11 +27,13 @@ func HandleCommands(reader *bufio.Reader, currentPath string) {
 			deleteFile(currentPath, command)
 		case "mkdir":
 			makeDir(currentPath, command)
+		case "help":
+			showHelp()
 		case "exit":
 			fmt.Println("Exiting...")
 			return
 		default:
-			fmt.Println("Unknown command. Available commands: cd, open, delete, mkdir, exit")
+			fmt.Println("Unknown command. Type 'help' to list available commands.")
 		}
 	}
 }
@@ -94,12 +96,22 @@ func deleteFile(currentPath string, command []string) {
 func makeDir(currentPath string, command []string) {
 	if len(command) < 2 {
 		fmt.Println("Usage: mkdir <directory>")
+		return
 	}
-
 	dirPath := filepath.Join(currentPath, command[1])
 	if err := os.Mkdir(dirPath, os.ModePerm); err != nil {
-		fmt.Println("Error creating directory: ", err)
+		fmt.Println("Error creating directory:", err)
 	} else {
-		fmt.Println("Directory created")
+		fmt.Println("Directory created.")
 	}
+}
+
+func showHelp() {
+	fmt.Println("Available commands:")
+	fmt.Println("  cd <directory>   - Change to the specified directory")
+	fmt.Println("  open <file>      - Open and display the content of the specified file")
+	fmt.Println("  delete <file>    - Delete the specified file")
+	fmt.Println("  mkdir <directory>- Create a new directory")
+	fmt.Println("  help             - Show this help message")
+	fmt.Println("  exit             - Exit the file explorer")
 }
