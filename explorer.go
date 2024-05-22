@@ -35,6 +35,7 @@ func HandleCommands(reader *bufio.Reader, currentPath string) {
 		default:
 			fmt.Println("Unknown command. Type 'help' to list available commands.")
 		}
+		fmt.Println()
 	}
 }
 
