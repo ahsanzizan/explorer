@@ -4,20 +4,27 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
 func HandleCommands(reader *bufio.Reader, currentPath string) {
 	for {
+		// Show current dir
 		fmt.Printf("Current Directory: %s\n", currentPath)
 		listDirectory(currentPath)
 
+		// Read user input, extract command
 		fmt.Print("\n> ")
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(input)
 		command := strings.Split(input, " ")
 
+		clearScreen()
+
+		// Process command
 		switch command[0] {
 		case "cd":
 			changeDirectory(&currentPath, command)
@@ -115,4 +122,19 @@ func showHelp() {
 	fmt.Println("  mkdir <directory>- Create a new directory")
 	fmt.Println("  help             - Show this help message")
 	fmt.Println("  exit             - Exit the file explorer")
+}
+
+func clearScreen() {
+	switch runtime.GOOS {
+	case "windows":
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	case "linux", "darwin":
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	default:
+		fmt.Println("Unsupported platform! Cannot clear terminal screen")
+	}
 }
