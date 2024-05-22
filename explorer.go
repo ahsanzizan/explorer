@@ -25,6 +25,8 @@ func HandleCommands(reader *bufio.Reader, currentPath string) {
 			openFile(currentPath, command)
 		case "delete":
 			deleteFile(currentPath, command)
+		case "mkdir":
+			makeDir(currentPath, command)
 		case "exit":
 			fmt.Println("Exiting...")
 			return
@@ -86,5 +88,18 @@ func deleteFile(currentPath string, command []string) {
 		fmt.Println("Error deleting file:", err)
 	} else {
 		fmt.Println("File deleted.")
+	}
+}
+
+func makeDir(currentPath string, command []string) {
+	if len(command) < 2 {
+		fmt.Println("Usage: mkdir <directory>")
+	}
+
+	dirPath := filepath.Join(currentPath, command[1])
+	if err := os.Mkdir(dirPath, os.ModePerm); err != nil {
+		fmt.Println("Error creating directory: ", err)
+	} else {
+		fmt.Println("Directory created")
 	}
 }
