@@ -31,7 +31,7 @@ func HandleCommands(reader *bufio.Reader, currentPath string) {
 			fmt.Println("Exiting...")
 			return
 		default:
-			fmt.Println("Unknown command. Available commands: cd, open, delete, exit")
+			fmt.Println("Unknown command. Available commands: cd, open, delete, mkdir, exit")
 		}
 	}
 }
